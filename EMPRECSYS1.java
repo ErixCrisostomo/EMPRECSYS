@@ -49,7 +49,7 @@ class EMPRECSYS1 {
 
         System.out.print("Enter ID: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Clear the newline
+        scanner.nextLine();
 
         System.out.print("Enter position: ");
         String position = scanner.nextLine();
