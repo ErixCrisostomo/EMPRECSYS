@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Comparator;
 
 class Employee {
     private String name;
@@ -43,53 +44,138 @@ class EMPRECSYS1 {
     private Scanner scanner = new Scanner(System.in);
 
     public void addEmployee() {
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
-        scanner.nextLine();
-
-        System.out.print("Enter ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter position: ");
-        String position = scanner.nextLine();
-
-        System.out.print("Enter hourly wage: ");
-        double hourlyWage = scanner.nextDouble();
-        
-
-        Employee employee = new Employee(name, id, position, hourlyWage);
-        employees.add(employee);
-        System.out.println("Employee added successfully.");
+        try {
+            int id = employees.size();
+    
+            System.out.print("Enter name: ");
+            scanner.nextLine();
+            String name = scanner.nextLine();
+    
+            System.out.print("Enter position: ");
+            String position = scanner.nextLine();
+    
+            System.out.print("Enter hourly wage: ");
+            double hourlyWage = scanner.nextDouble();
+            
+            if (hourlyWage < 0) {
+                System.out.println("Hourly wage cannot be negative.");
+                return;
+            }
+    
+            Employee employee = new Employee(name, id, position, hourlyWage);
+            employees.add(employee);
+            System.out.printf("Employee added successfully with ID: %04d%n", id);
+    
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please try again.");
+            scanner.nextLine();
+        }
     }
 
     public void recordHours() {
-        System.out.print("Enter employee ID: ");
-        int id = scanner.nextInt();
-        System.out.print("Enter hours worked: ");
-        double hours = scanner.nextDouble();
-
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                employee.addHours(hours);
-                System.out.println("Hours recorded successfully.");
+        try {
+            System.out.print("Enter employee ID: ");
+            int id = scanner.nextInt();
+    
+            // employee exist?
+            Employee employee = null;
+            for (Employee emp : employees) {
+                if (emp.getId() == id) {
+                    employee = emp;
+                    break;
+                }
+            }
+    
+            if (employee == null) {
+                System.out.println("Employee not found.");
                 return;
             }
+    
+            System.out.print("Enter hours worked: ");
+            double hours = scanner.nextDouble();
+            
+            if (hours <= 0) {
+                System.out.println("Hours worked must be greater than zero.");
+                return;
+            }
+    
+            employee.addHours(hours);
+            System.out.println("Hours recorded successfully.");
+    
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please enter numerical values.");
+            scanner.nextLine();
         }
-        System.out.println("Employee not found.");
     }
 
     public void displayEmployeeDetails() {
-        System.out.print("Enter employee ID: ");
-        int id = scanner.nextInt();
-
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                System.out.println(employee);
+        try {
+            if (employees.isEmpty()) {
+                System.out.println("No employees found.");
                 return;
             }
+    
+            // sort by id
+            employees.sort(Comparator.comparingInt(Employee::getId));
+    
+            // employee table header
+            System.out.printf("%-6s | %-25s | %-15s | %-12s | %-12s | %-12s%n", 
+                              centerText("ID", 6), centerText("Name", 25), centerText("Position", 15), 
+                              centerText("Hourly Wage", 12), centerText("Hours Worked", 12), 
+                              centerText("Total Salary", 12));
+            System.out.println("----------------------------------------------------------------------------------------");
+    
+            // display employees
+            for (Employee employee : employees) {
+                String[] nameLines = splitText(employee.getName(), 25);
+                String[] positionLines = splitText(employee.getPosition(), 15);
+    
+                int maxLines = Math.max(nameLines.length, positionLines.length);
+    
+                // line by line print
+                for (int i = 0; i < maxLines; i++) {
+                    String id = i == 0 ? String.format("%04d", employee.getId()) : ""; // id 
+                    String name = i < nameLines.length ? nameLines[i] : ""; // name 
+                    String position = i < positionLines.length ? positionLines[i] : ""; // position 
+                    String wage = i == 0 ? String.format("$%.2f", employee.getHourlyWage()) : "";
+                    String hours = i == 0 ? String.format("%.2f", employee.getHoursWorked()) : "";
+                    String salary = i == 0 ? String.format("$%.2f", employee.calculateSalary()) : "";
+    
+                    System.out.printf("%-6s | %-25s | %-15s | %-12s | %-12s | %-12s%n",
+                                      centerText(id, 6), centerText(name, 25), centerText(position, 15),
+                                      centerText(wage, 12), centerText(hours, 12), centerText(salary, 12));
+                }
+                System.out.println("----------------------------------------------------------------------------------------");
+            }
+    
+        } catch (Exception e) {
+            System.out.println("An error occurred while displaying employee details.");
         }
-        System.out.println("Employee not found.");
+    }
+    
+    // center text
+    private String centerText(String text, int width) {
+        if (text.length() >= width) return text;
+        int padding = (width - text.length()) / 2;
+        String pad = " ".repeat(padding);
+        return pad + text + pad + (width % 2 == 0 ? "" : " ");
+    }
+    
+    // split text for multi-lining
+    private String[] splitText(String text, int width) {
+        if (text.length() <= width) {
+            return new String[]{text};
+        }
+    
+        // break text into chunks for the specidifed width
+        int lines = (int) Math.ceil((double) text.length() / width);
+        String[] result = new String[lines];
+        for (int i = 0; i < lines; i++) {
+            int start = i * width;
+            int end = Math.min(start + width, text.length());
+            result[i] = text.substring(start, end);
+        }
+        return result;
     }
 
     public void displayAllEmployees() {
