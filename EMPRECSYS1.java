@@ -37,6 +37,22 @@ class Employee {
                ", Hourly Wage: $" + hourlyWage + ", Hours Worked: " + hoursWorked +
                ", Total Salary: $" + calculateSalary();
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setPosition(String position) {
+        this.position = position;
+    }
+    
+    public void setHourlyWage(double hourlyWage) {
+        if (hourlyWage > 0) {
+            this.hourlyWage = hourlyWage;
+        } else {
+            System.out.println("Hourly wage must be positive.");
+        }
+    }
 }
 
 class EMPRECSYS1 {
@@ -123,7 +139,7 @@ class EMPRECSYS1 {
                               centerText("ID", 6), centerText("Name", 25), centerText("Position", 15), 
                               centerText("Hourly Wage", 12), centerText("Hours Worked", 12), 
                               centerText("Total Salary", 12));
-            System.out.println("----------------------------------------------------------------------------------------");
+            System.out.println("---------------------------------------------------------------------------------------------------");
     
             // display employees
             for (Employee employee : employees) {
@@ -145,7 +161,7 @@ class EMPRECSYS1 {
                                       centerText(id, 6), centerText(name, 25), centerText(position, 15),
                                       centerText(wage, 12), centerText(hours, 12), centerText(salary, 12));
                 }
-                System.out.println("----------------------------------------------------------------------------------------");
+                System.out.println("---------------------------------------------------------------------------------------------------");
             }
     
         } catch (Exception e) {
@@ -158,7 +174,7 @@ class EMPRECSYS1 {
         if (text.length() >= width) return text;
         int padding = (width - text.length()) / 2;
         String pad = " ".repeat(padding);
-        return pad + text + pad + (width % 2 == 0 ? "" : " ");
+        return pad + text + pad + (width % 2 == 0 ? "" : "");
     }
     
     // split text for multi-lining
@@ -178,13 +194,79 @@ class EMPRECSYS1 {
         return result;
     }
 
-    public void displayAllEmployees() {
-        if (employees.isEmpty()) {
-            System.out.println("No employees found.");
-        } else {
-            for (Employee employee : employees) {
-                System.out.println(employee);
+    public void deleteEmployee() {
+        System.out.print("Enter the ID of the employee to delete: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+    
+        // id search
+        Employee employeeToDelete = null;
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
+                employeeToDelete = employee;
+                break;
             }
+        }
+    
+        if (employeeToDelete != null) {
+            // confirm delete
+            System.out.print("Are you sure you want to delete employee " + employeeToDelete.getName() + " (ID: " + employeeToDelete.getId() + ")? (yes/no): ");
+            String confirmation = scanner.nextLine().trim().toLowerCase();
+    
+            if (confirmation.equals("yes") || confirmation.equals("y")) {
+                employees.remove(employeeToDelete);
+                System.out.println("Employee " + employeeToDelete.getName() + " has been successfully deleted.");
+            } else if (confirmation.equals("no") || confirmation.equals("n")) {
+                System.out.println("Deletion canceled. No changes made.");
+            } else {
+                System.out.println("Invalid input. Please type 'yes' or 'no' to confirm deletion.");
+            }
+        } else {
+            System.out.println("Employee with the specified ID not found.");
+        }
+    }
+
+    public void modifyEmployee() {
+        System.out.print("Enter the ID of the employee to modify: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+    
+        // id search
+        Employee employeeToModify = null;
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
+                employeeToModify = employee;
+                break;
+            }
+        }
+    
+        if (employeeToModify != null) {
+            System.out.print("Enter new name (leave blank to keep current: " + employeeToModify.getName() + "): ");
+            String newName = scanner.nextLine();
+            if (!newName.trim().isEmpty()) {
+                employeeToModify.setName(newName);
+            }
+    
+            System.out.print("Enter new position (leave blank to keep current: " + employeeToModify.getPosition() + "): ");
+            String newPosition = scanner.nextLine();
+            if (!newPosition.trim().isEmpty()) {
+                employeeToModify.setPosition(newPosition);
+            }
+    
+            System.out.print("Enter new hourly wage (current: $" + employeeToModify.getHourlyWage() + "): ");
+            String wageInput = scanner.nextLine();
+            if (!wageInput.trim().isEmpty()) {
+                try {
+                    double newWage = Double.parseDouble(wageInput);
+                    employeeToModify.setHourlyWage(newWage);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid wage input. Hourly wage remains unchanged.");
+                }
+            }
+    
+            System.out.println("Employee details updated successfully.");
+        } else {
+            System.out.println("Employee with the specified ID not found.");
         }
     }
 
@@ -194,11 +276,12 @@ class EMPRECSYS1 {
             System.out.println("1. Add Employee");
             System.out.println("2. Record Hours Worked");
             System.out.println("3. Display Employee Details");
-            System.out.println("4. Display All Employees");
-            System.out.println("5. Exit");
+            System.out.println("4. Delete Employee"); 
+            System.out.println("5. Modify Employee");
+            System.out.println("6. Exit");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-
+    
             switch (choice) {
                 case 1:
                     addEmployee();
@@ -210,9 +293,12 @@ class EMPRECSYS1 {
                     displayEmployeeDetails();
                     break;
                 case 4:
-                    displayAllEmployees();
+                    deleteEmployee();
                     break;
                 case 5:
+                    modifyEmployee();
+                    break;
+                case 6:
                     System.out.println("Exiting system.");
                     return;
                 default:
