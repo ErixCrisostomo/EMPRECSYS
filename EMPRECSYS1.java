@@ -270,15 +270,53 @@ class EMPRECSYS1 {
         }
     }
 
-    public void run() {
+    public void displayEmployeeSalary() {
+        System.out.print("Enter the ID of the employee to view salary: ");
+        int id = scanner.nextInt();
+    
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
+                System.out.println("\nEmployee Salary Details:");
+                System.out.printf("ID: %04d | Name: %s | Total Hours Worked: %.2f | Total Salary: $%.2f%n",
+                    employee.getId(), employee.getName(), employee.getHoursWorked(), employee.calculateSalary());
+                return;
+            }
+        }
+        System.out.println("Employee with the specified ID not found.");
+    }
+
+    public void wageManagement() {
         while (true) {
-            System.out.println("\nEmployee Records System:");
+            System.out.println("\nWage Management:");
+            System.out.println("1. Record Hours Worked");
+            System.out.println("2. Calculate and Display Employee Salary");
+            System.out.println("3. Back to Main Menu");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+    
+            switch (choice) {
+                case 1:
+                    recordHours();
+                    break;
+                case 2:
+                    displayEmployeeSalary();
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    public void employeePortal() {
+        while (true) {
+            System.out.println("\nEmployee Portal:");
             System.out.println("1. Add Employee");
-            System.out.println("2. Record Hours Worked");
-            System.out.println("3. Display Employee Details");
-            System.out.println("4. Delete Employee"); 
-            System.out.println("5. Modify Employee");
-            System.out.println("6. Exit");
+            System.out.println("2. Delete Employee");
+            System.out.println("3. Modify Employee");
+            System.out.println("4. Display Employee Details");
+            System.out.println("5. Back to Main Menu");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
     
@@ -287,18 +325,39 @@ class EMPRECSYS1 {
                     addEmployee();
                     break;
                 case 2:
-                    recordHours();
-                    break;
-                case 3:
-                    displayEmployeeDetails();
-                    break;
-                case 4:
                     deleteEmployee();
                     break;
-                case 5:
+                case 3:
                     modifyEmployee();
                     break;
-                case 6:
+                case 4:
+                    displayEmployeeDetails();
+                    break;
+                case 5:
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    public void run() {
+        while (true) {
+            System.out.println("\nEmployee Records System:");
+            System.out.println("1. Employee Portal");
+            System.out.println("2. Wage Management");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+    
+            switch (choice) {
+                case 1:
+                    employeePortal();
+                    break;
+                case 2:
+                    wageManagement();
+                    break;
+                case 3:
                     System.out.println("Exiting system.");
                     return;
                 default:
