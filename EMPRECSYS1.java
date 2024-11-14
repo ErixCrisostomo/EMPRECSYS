@@ -70,57 +70,79 @@ class EMPRECSYS1 {
             System.out.print("Enter position: ");
             String position = scanner.nextLine();
     
-            System.out.print("Enter hourly wage: ");
-            double hourlyWage = scanner.nextDouble();
-            
-            if (hourlyWage < 0) {
-                System.out.println("Hourly wage cannot be negative.");
-                return;
+            double hourlyWage = -1;
+            while (hourlyWage < 0) {
+                System.out.print("Enter hourly wage: ");
+                if (scanner.hasNextDouble()) {
+                    hourlyWage = scanner.nextDouble();
+                    if (hourlyWage < 0) {
+                        System.out.println("Hourly wage cannot be negative. Please try again.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a numeric value for hourly wage.");
+                    scanner.next();
+                }
             }
     
             Employee employee = new Employee(name, id, position, hourlyWage);
             employees.add(employee);
             System.out.printf("Employee added successfully with ID: %04d%n", id);
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+            scanner.nextLine();
     
         } catch (Exception e) {
-            System.out.println("Invalid input. Please try again.");
+            System.out.println("An unexpected error occurred while adding the employee.");
+            System.out.println("\nPress Enter to continue...");
             scanner.nextLine();
         }
     }
 
     public void recordHours() {
-        try {
-            System.out.print("Enter employee ID: ");
-            int id = scanner.nextInt();
-    
-            // employee exist?
-            Employee employee = null;
-            for (Employee emp : employees) {
-                if (emp.getId() == id) {
-                    employee = emp;
-                    break;
-                }
+    try {
+        System.out.print("Enter employee ID: ");
+        int id = scanner.nextInt();
+
+        // employee exist?
+        Employee employee = null;
+        for (Employee emp : employees) {
+            if (emp.getId() == id) {
+                employee = emp;
+                break;
             }
-    
-            if (employee == null) {
-                System.out.println("Employee not found.");
-                return;
-            }
-    
+        }
+
+        if (employee == null) {
+            System.out.println("Employee not found.");
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+            return;
+        }
+
+        double hours = -1;
+        while (hours <= 0) {
             System.out.print("Enter hours worked: ");
-            double hours = scanner.nextDouble();
-            
-            if (hours <= 0) {
-                System.out.println("Hours worked must be greater than zero.");
-                return;
+            if (scanner.hasNextDouble()) {
+                hours = scanner.nextDouble();
+                if (hours <= 0) {
+                    System.out.println("Hours worked must be greater than zero. Please try again.");
+                }
+            } 
+            else {
+                System.out.println("Invalid input. Please enter a numeric value for hours worked.");
+                scanner.next(); 
             }
-    
+        }
+
             employee.addHours(hours);
             System.out.println("Hours recorded successfully.");
-    
-        } catch (Exception e) {
-            System.out.println("Invalid input. Please enter numerical values.");
+            System.out.println("\nPress Enter to continue...");
             scanner.nextLine();
+
+        } catch (Exception e) {
+          System.out.println("An error occurred while recording hours.");
+         System.out.println("\nPress Enter to continue...");
+         scanner.nextLine();
         }
     }
 
@@ -128,6 +150,8 @@ class EMPRECSYS1 {
         try {
             if (employees.isEmpty()) {
                 System.out.println("No employees found.");
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
                 return;
             }
     
@@ -164,9 +188,12 @@ class EMPRECSYS1 {
                 System.out.println("---------------------------------------------------------------------------------------------------");
             }
     
-        } catch (Exception e) {
+        } 
+            catch (Exception e) {
             System.out.println("An error occurred while displaying employee details.");
-        }
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+            }
     }
     
     // center text
@@ -183,7 +210,7 @@ class EMPRECSYS1 {
             return new String[]{text};
         }
     
-        // break text into chunks for the specidifed width
+        // break text into chunks for specidifed width
         int lines = (int) Math.ceil((double) text.length() / width);
         String[] result = new String[lines];
         for (int i = 0; i < lines; i++) {
@@ -195,10 +222,18 @@ class EMPRECSYS1 {
     }
 
     public void deleteEmployee() {
+    try {
+        if (employees.isEmpty()) {
+            System.out.println("No employees found.");
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+            return;
+        }
+
         System.out.print("Enter the ID of the employee to delete: ");
         int id = scanner.nextInt();
         scanner.nextLine();
-    
+
         // id search
         Employee employeeToDelete = null;
         for (Employee employee : employees) {
@@ -207,12 +242,12 @@ class EMPRECSYS1 {
                 break;
             }
         }
-    
+
         if (employeeToDelete != null) {
             // confirm delete
             System.out.print("Are you sure you want to delete employee " + employeeToDelete.getName() + " (ID: " + employeeToDelete.getId() + ")? (yes/no): ");
             String confirmation = scanner.nextLine().trim().toLowerCase();
-    
+
             if (confirmation.equals("yes") || confirmation.equals("y")) {
                 employees.remove(employeeToDelete);
                 System.out.println("Employee " + employeeToDelete.getName() + " has been successfully deleted.");
@@ -224,144 +259,213 @@ class EMPRECSYS1 {
         } else {
             System.out.println("Employee with the specified ID not found.");
         }
+        System.out.println("\nPress Enter to continue...");
+        scanner.nextLine();
+
+    } 
+        catch (Exception e) {
+            System.out.println("An error occurred while deleting employee.");
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+        }
     }
 
     public void modifyEmployee() {
-        System.out.print("Enter the ID of the employee to modify: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-    
-        // id search
-        Employee employeeToModify = null;
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                employeeToModify = employee;
-                break;
-            }
-        }
-    
-        if (employeeToModify != null) {
-            System.out.print("Enter new name (leave blank to keep current: " + employeeToModify.getName() + "): ");
-            String newName = scanner.nextLine();
-            if (!newName.trim().isEmpty()) {
-                employeeToModify.setName(newName);
+        try {
+            if (employees.isEmpty()) {
+                System.out.println("No employees found.");
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
+                return;
             }
     
-            System.out.print("Enter new position (leave blank to keep current: " + employeeToModify.getPosition() + "): ");
-            String newPosition = scanner.nextLine();
-            if (!newPosition.trim().isEmpty()) {
-                employeeToModify.setPosition(newPosition);
-            }
+            System.out.print("Enter the ID of the employee to modify: ");
+            int id = scanner.nextInt();
+            scanner.nextLine(); 
     
-            System.out.print("Enter new hourly wage (current: $" + employeeToModify.getHourlyWage() + "): ");
-            String wageInput = scanner.nextLine();
-            if (!wageInput.trim().isEmpty()) {
-                try {
-                    double newWage = Double.parseDouble(wageInput);
-                    employeeToModify.setHourlyWage(newWage);
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid wage input. Hourly wage remains unchanged.");
+            // id search
+            Employee employeeToModify = null;
+            for (Employee employee : employees) {
+                if (employee.getId() == id) {
+                    employeeToModify = employee;
+                    break;
                 }
             }
     
-            System.out.println("Employee details updated successfully.");
-        } else {
-            System.out.println("Employee with the specified ID not found.");
+            if (employeeToModify != null) {
+                System.out.print("Enter new name (leave blank to keep current: " + employeeToModify.getName() + "): ");
+                String newName = scanner.nextLine();
+                if (!newName.trim().isEmpty()) {
+                    employeeToModify.setName(newName);
+                }
+    
+                System.out.print("Enter new position (leave blank to keep current: " + employeeToModify.getPosition() + "): ");
+                String newPosition = scanner.nextLine();
+                if (!newPosition.trim().isEmpty()) {
+                    employeeToModify.setPosition(newPosition);
+                }
+    
+                System.out.print("Enter new hourly wage (current: $" + employeeToModify.getHourlyWage() + "): ");
+                String wageInput = scanner.nextLine();
+                if (!wageInput.trim().isEmpty()) {
+                    try {
+                        double newWage = Double.parseDouble(wageInput);
+                        employeeToModify.setHourlyWage(newWage);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid wage input. Hourly wage remains unchanged.");
+                        System.out.println("\nPress Enter to continue...");
+                        scanner.nextLine();
+                        return;
+                    }
+                }
+    
+                System.out.println("Employee details updated successfully.");
+            } else {
+                System.out.println("Employee with the specified ID not found.");
+            }
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+    
+        } catch (Exception e) {
+            System.out.println("An error occurred while modifying employee.");
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
         }
     }
 
     public void displayEmployeeSalary() {
-        System.out.print("Enter the ID of the employee to view salary: ");
-        int id = scanner.nextInt();
+        try {
+            System.out.print("Enter the ID of the employee to view salary: ");
+            int id = scanner.nextInt();
+            scanner.nextLine(); 
     
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                System.out.println("\nEmployee Salary Details:");
-                System.out.printf("ID: %04d | Name: %s | Total Hours Worked: %.2f | Total Salary: $%.2f%n",
-                    employee.getId(), employee.getName(), employee.getHoursWorked(), employee.calculateSalary());
-                return;
+            boolean found = false;
+            for (Employee employee : employees) {
+                if (employee.getId() == id) {
+                    System.out.println("\nEmployee Salary Details:");
+                    System.out.printf("ID: %04d | Name: %s | Total Hours Worked: %.2f | Total Salary: $%.2f%n",
+                        employee.getId(), employee.getName(), employee.getHoursWorked(), employee.calculateSalary());
+                    found = true;
+                    break;
+                }
             }
+    
+            if (!found) {
+                System.out.println("Employee with the specified ID not found.");
+            }
+    
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+    
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please enter a valid numerical ID.");
+            scanner.nextLine(); 
         }
-        System.out.println("Employee with the specified ID not found.");
     }
 
     public void wageManagement() {
         while (true) {
-            System.out.println("\nWage Management:");
-            System.out.println("1. Record Hours Worked");
-            System.out.println("2. Calculate and Display Employee Salary");
-            System.out.println("3. Back to Main Menu");
-            System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
+            try {
+                System.out.println("\nWage Management:");
+                System.out.println("1. Record Hours Worked");
+                System.out.println("2. Calculate and Display Employee Salary");
+                System.out.println("3. Back to Main Menu");
+                System.out.print("Choose an option: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); 
     
-            switch (choice) {
-                case 1:
-                    recordHours();
-                    break;
-                case 2:
-                    displayEmployeeSalary();
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                switch (choice) {
+                    case 1:
+                        recordHours();
+                        break;
+                    case 2:
+                        displayEmployeeSalary();
+                        break;
+                    case 3:
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                        System.out.println("\nPress Enter to continue...");
+                        scanner.nextLine();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number for the option.");
+                scanner.nextLine(); 
             }
         }
     }
 
     public void employeePortal() {
         while (true) {
-            System.out.println("\nEmployee Portal:");
-            System.out.println("1. Add Employee");
-            System.out.println("2. Delete Employee");
-            System.out.println("3. Modify Employee");
-            System.out.println("4. Display Employee Details");
-            System.out.println("5. Back to Main Menu");
-            System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
+            try {
+                System.out.println("\nEmployee Portal:");
+                System.out.println("1. Add Employee");
+                System.out.println("2. Delete Employee");
+                System.out.println("3. Modify Employee");
+                System.out.println("4. Display Employee Details");
+                System.out.println("5. Back to Main Menu");
+                System.out.print("Choose an option: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); 
     
-            switch (choice) {
-                case 1:
-                    addEmployee();
-                    break;
-                case 2:
-                    deleteEmployee();
-                    break;
-                case 3:
-                    modifyEmployee();
-                    break;
-                case 4:
-                    displayEmployeeDetails();
-                    break;
-                case 5:
-                    return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                switch (choice) {
+                    case 1:
+                        addEmployee();
+                        break;
+                    case 2:
+                        deleteEmployee();
+                        break;
+                    case 3:
+                        modifyEmployee();
+                        break;
+                    case 4:
+                        displayEmployeeDetails();
+                        break;
+                    case 5:
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                        System.out.println("\nPress Enter to continue...");
+                        scanner.nextLine();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number for the option.");
+                scanner.nextLine(); 
             }
         }
     }
 
     public void run() {
         while (true) {
-            System.out.println("\nEmployee Records System:");
-            System.out.println("1. Employee Portal");
-            System.out.println("2. Wage Management");
-            System.out.println("3. Exit");
-            System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-    
-            switch (choice) {
-                case 1:
-                    employeePortal();
-                    break;
-                case 2:
-                    wageManagement();
-                    break;
-                case 3:
-                    System.out.println("Exiting system.");
-                    return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+            try {
+                System.out.println("\nEmployee Records System:");
+                System.out.println("1. Employee Portal");
+                System.out.println("2. Wage Management");
+                System.out.println("3. Exit");
+                System.out.print("Choose an option: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+        
+                switch (choice) {
+                    case 1:
+                        employeePortal();
+                        break;
+                    case 2:
+                        wageManagement();
+                        break;
+                    case 3:
+                        System.out.println("Exiting system.");
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                        System.out.println("\nPress Enter to continue...");
+                        scanner.nextLine();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine(); 
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
         }
     }
