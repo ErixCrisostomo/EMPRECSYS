@@ -73,7 +73,16 @@ Follow these steps to set up and run the Employee Records Management System:
 
 ## <a id = "pics"> 📸 Screenshots </a> <br>
 
-Interface
+Interface:
+<p align = "center">
+  <img src = "interface1.JPG" width = "524" height = "342" alt="interface"> 
+</p>
+<p align = "center">
+  <img src = "interface2.JPG" width = "488" height = "403" alt="interface"> 
+</p>
+<p align = "center">
+  <img src = "interface3.JPG" width = "536" height = "303" alt="interface"> 
+</p>
 
 ## <a id = "contribs"> 👷‍ Contributors </a> <br>
 | Name | Role | Contact |
