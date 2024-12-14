@@ -7,6 +7,7 @@
 [3. SDG Integration](#sdg) <br>
 [4. How to Run the Program](#proj-run) <br>
 [5. Screenshots](#pics)
+[6. Contributors](#contribs) <br>
 
 ## <a id = "proj-over"> 📄 Project Overview </a> <br>
 **_EMPRECSYS_** is a Java-based application designed to manage employee information and salary details efficiently. The program offers features such as adding, modifying, and deleting employee records while providing detailed salary breakdowns. It leverages Object-Oriented Programming (OOP) principles to ensure modularity, maintainability, and scalability. The system supports both full-time and part-time employees, demonstrating flexibility in workforce management.
@@ -15,20 +16,20 @@
 This project showcases the use of core OOP principles:
 
   **_1. Encapsulation_**
-  <br> All sensitive employee details (e.g., salary and contact information) are encapsulated within appropriate classes (Employee, FullTimeEmployee, PartTimeEmployee).
+  <br> All sensitive employee details (e.g., salary and contact information) are encapsulated within appropriate classes (`Employee`, `FullTimeEmployee`, `PartTimeEmployee`).
   
   Access to these details is controlled through getters and setters, ensuring data integrity and security.
   
   **_2. Abstraction_**
-  <br> The abstract class Employee defines a common structure for all employees, with concrete details implemented in its subclasses (FullTimeEmployee, PartTimeEmployee).
+  <br> The abstract class `Employee` defines a common structure for all employees, with concrete details implemented in its subclasses (`FullTimeEmployee`, `PartTimeEmployee`).
   
   This abstraction simplifies the system and reduces code duplication.
   
   **_3. Inheritance_**
-  <br> Classes like FullTimeEmployee and PartTimeEmployee inherit attributes and methods from the Employee class, demonstrating code reuse and extending functionality.
+  <br> Classes like `FullTimeEmployee` and `PartTimeEmployee` inherit attributes and methods from the `Employee` class, demonstrating code reuse and extending functionality.
   
   **_4. Polymorphism_**
-  <br> The system allows dynamic method overriding, as seen in the calculateSalary method, which is implemented differently for full-time and part-time employees.
+  <br> The system allows dynamic method overriding, as seen in the `calculateSalary` method, which is implemented differently for full-time and part-time employees.
   
   This enables flexibility in handling various employee types seamlessly.
 
@@ -38,7 +39,6 @@ This project aligns with SDG 8: Decent Work and Economic Growth, which emphasize
 How it's integrated:
 
   By managing employee data and salary details efficiently, the system ensures transparency and fairness in employment.
-  
   The application supports both full-time and part-time employees, catering to diverse employment needs and promoting inclusive work practices.
 
 ## <a id = "proj-run"> 🚀 Instructions for Running the Program </a> <br>
@@ -73,7 +73,12 @@ Follow these steps to set up and run the Employee Records Management System:
 
 ## <a id = "pics"> 📸 Screenshots </a> <br>
 
-Include screenshots of the program interface and sample outputs for a better understanding of the system's features.
+Interface
 
+## <a id = "contribs"> 👷‍ Contributors </a> <br>
+| Name | Role | Contact |
+| --- | --- | --- |
+| <a href = "(https://github.com/ErixCrisostomo)">Crisostomo, Erix Steven L.</a>| Developer | 23-01893@g.batstate-u.edu.ph |
+| <a href = "(https://github.com/marieemoiselle)">Agdon, Fatima Marie P.</a>| Instructor | fatimamarie.agdon@g.batstate-u.edu.ph |
 ## 💡 Thank You!
 
