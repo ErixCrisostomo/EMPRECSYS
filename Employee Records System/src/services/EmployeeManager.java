@@ -13,6 +13,7 @@ import models.Person;
 import database.EmployeeDatabase;
 import utils.Utils;
 
+//Manages Employees
 public class EmployeeManager {
     ArrayList<Employee> employees = EmployeeDatabase.getEmployees();
     EmployeeDisplay system = new EmployeeDisplay();
@@ -27,6 +28,7 @@ public class EmployeeManager {
         return person;
     }
 
+    //Add Full-Time Employee
     public void addFullTimeEmployee() {
         system1.employeePortal();
         try {
@@ -63,6 +65,7 @@ public class EmployeeManager {
         }
     }
 
+    //Add Part-Time Employee
     public void addPartTimeEmployee() {
         system1.employeePortal();
         try {
@@ -114,6 +117,7 @@ public class EmployeeManager {
         }
     }
 
+    //Delete Employee
     public void deleteEmployee() {
         system1.employeePortal();
         ArrayList<Employee> employees = EmployeeDatabase.getEmployees();
@@ -150,6 +154,7 @@ public class EmployeeManager {
         Utils.pauseInterface();
     }
 
+    //Modify Employee
     public void modifyEmployee() {
         system1.employeePortal();
         ArrayList<Employee> employees = EmployeeDatabase.getEmployees();
@@ -271,6 +276,7 @@ public class EmployeeManager {
         Utils.pauseInterface();
     }
 
+    //Employee Portal Menu
     public void employeeManagementMenu() {
         int choice;
         do {
