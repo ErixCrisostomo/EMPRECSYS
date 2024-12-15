@@ -3,7 +3,7 @@ package database;
 import java.util.ArrayList;
 import models.Employee;
 
-//Stores Employees
+//Stores Employees' Data
 public class EmployeeDatabase {
     public static final ArrayList<Employee> employees = new ArrayList<>();
     public static int nextId = 1;
