@@ -9,6 +9,7 @@ import models.FullTimeEmployee;
 import models.PartTimeEmployee;
 import utils.Utils;
 
+//Displays Employee Info
 public class EmployeeDisplay {
     Titles system1 = new Titles();
     
@@ -32,14 +33,18 @@ public class EmployeeDisplay {
             }
         }
 
-        fullTimeEmployees.sort(Comparator.comparingInt(Employee::getId));
+        
+//Sorters
+fullTimeEmployees.sort(Comparator.comparingInt(Employee::getId));
         partTimeEmployees.sort(Comparator.comparingInt(Employee::getId));
 
         System.out.println("\n\t\t\t\t\t\t\t   F U L L - T I M E  E M P L O Y E E S");
         printEmployeeTable(fullTimeEmployees);
 
         System.out.println("\n\t\t\t\t\t\t\t   P A R T - T I M E  E M P L O Y E E S");
-        printEmployeeTable(partTimeEmployees);
+
+
+//Prints Table with Proper Formatting        printEmployeeTable(partTimeEmployees);
         Utils.pauseInterface();
     }
 
